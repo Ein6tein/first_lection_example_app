@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_activity_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/default_background"
@@ -11,21 +13,25 @@
         android:id="@+id/tv_app_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/ll_form_holder"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
         android:text="@string/app_name"
         android:textColor="@color/default_text"
         android:textSize="@dimen/title_text"
+        app:layout_constraintBottom_toTopOf="@id/ll_form_holder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread"
         />
 
     <LinearLayout
         android:id="@+id/ll_form_holder"
         android:layout_width="@dimen/input_width"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_app_title"
+        app:layout_constraintBottom_toTopOf="@id/ll_buttons_container"
         >
 
         <TextView
@@ -38,7 +44,7 @@
 
         <EditText
             android:id="@+id/et_login"
-            android:layout_width="@dimen/input_width"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_login"
             android:imeOptions="actionNext"
@@ -58,7 +64,7 @@
 
         <EditText
             android:id="@+id/et_password"
-            android:layout_width="@dimen/input_width"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_password"
             android:imeOptions="actionDone"
@@ -70,13 +76,15 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_buttons_container"
         android:layout_width="@dimen/button_width"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@id/ll_form_holder"
         android:gravity="center"
-        android:layout_centerHorizontal="true"
         android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_form_holder"
         >
 
         <Button
@@ -96,4 +104,4 @@
             />
 
     </LinearLayout>
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

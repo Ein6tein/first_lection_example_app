@@ -15,7 +15,7 @@
         tools:ignore="AllowBackup"
         >
 
-        <activity android:name="com.igor.app.MainActivity">
+        <activity android:name="com.igor.app.activity.MainActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,5 +23,11 @@
             </intent-filter>
 
         </activity>
+
+        <activity
+            android:name=".activity.MainButterKnifeActivity"
+            android:parentActivityName=".activity.MainActivity"
+            />
+
     </application>
 </manifest>

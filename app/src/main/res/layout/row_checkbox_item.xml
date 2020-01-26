@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    >
+
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:paddingStart="10dp"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        tools:text="Some random text to check"
+        tools:ignore="RtlSymmetry"
+        />
+
+</FrameLayout>

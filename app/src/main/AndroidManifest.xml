@@ -29,5 +29,10 @@
             android:parentActivityName=".activity.MainActivity"
             />
 
+        <activity
+            android:name=".activity.RecyclerViewExampleActivity"
+            android:parentActivityName=".activity.MainButterKnifeActivity"
+            />
+
     </application>
 </manifest>

@@ -1,7 +1,7 @@
 package com.igor.app.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -9,8 +9,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.igor.app.R;
+import com.igor.app.dialog.InfoDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,6 +25,7 @@ public class MainButterKnifeActivity extends AppCompatActivity {
     @BindView(R.id.et_password) EditText mPassword;
 
     private Unbinder mUnbinder;
+    private InfoDialog mDialog;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,22 +51,15 @@ public class MainButterKnifeActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.btn_sign_in) void onSignInClicked() {
-        String loginText = mLogin.getText().toString();
-        String passwordText = mPassword.getText().toString();
+        mDialog = new InfoDialog.Builder()
+                .setTitle("Some title")
+                .setImage(R.drawable.smaller_android)
+                .setButton1("Close", v -> mDialog.dismiss())
+                .build();
+        mDialog.show(getSupportFragmentManager(), InfoDialog.TAG);
+    }
 
-        if (TextUtils.isEmpty(loginText)) {
-            mLogin.setError("Should not be empty");
-        } else {
-            mLogin.setError(null);
-        }
-        if (TextUtils.isEmpty(passwordText)) {
-            mPassword.setError("Should not be empty");
-            return;
-        } else {
-            mPassword.setError(null);
-        }
-
-        String text = "Login: " + loginText + ", Password: " + passwordText;
-        Snackbar.make(mActivityContent, text, Snackbar.LENGTH_LONG).show();
+    @OnClick(R.id.btn_forgot_password) void onForgotPassword() {
+        startActivity(new Intent(this, RecyclerViewExampleActivity.class));
     }
 }

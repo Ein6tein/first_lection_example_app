@@ -4,19 +4,14 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.igor.app.R;
-import com.igor.app.adapter.RecyclerViewAdapter;
+import com.igor.app.fragment.ExampleFragment;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class RecyclerViewExampleActivity extends AppCompatActivity {
-
-    @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
 
     private Unbinder mBind;
 
@@ -28,9 +23,10 @@ public class RecyclerViewExampleActivity extends AppCompatActivity {
 
     @Override protected void onStart() {
         super.onStart();
-
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-        mRecyclerView.setAdapter(new RecyclerViewAdapter(this));
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fl_fragment_container, new ExampleFragment(), ExampleFragment.TAG)
+                .commit();
     }
 
     @Override protected void onStop() {

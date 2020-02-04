@@ -19,8 +19,8 @@
 
     <!-- Чтобы сделать RecyclerView доступным, его надо подключить в build.gradle
          который (Module: app) -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <FrameLayout
+        android:id="@+id/fl_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />

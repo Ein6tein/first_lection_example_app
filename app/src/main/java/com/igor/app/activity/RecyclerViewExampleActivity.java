@@ -3,20 +3,22 @@ package com.igor.app.activity;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.igor.app.R;
 import com.igor.app.fragment.ExampleFragment;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import dagger.android.AndroidInjection;
+import dagger.android.support.DaggerAppCompatActivity;
 
-public class RecyclerViewExampleActivity extends AppCompatActivity {
+public class RecyclerViewExampleActivity extends DaggerAppCompatActivity {
 
     private Unbinder mBind;
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AndroidInjection.inject(this);
         setContentView(R.layout.activity_recycler_view_example);
         mBind = ButterKnife.bind(this);
     }

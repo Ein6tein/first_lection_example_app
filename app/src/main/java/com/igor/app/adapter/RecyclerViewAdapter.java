@@ -1,6 +1,7 @@
 package com.igor.app.adapter;
 
 import android.content.Context;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,14 +10,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.igor.app.R;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
 
 /*
  * Это класс, который генерирует элементы для RecyclerView.
@@ -26,25 +33,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static final int VIEW_TYPE_CHECKBOX = 1;
     private static final int VIEW_TYPE_ICON = 2;
 
-    private static final String[] DATA = {
-            "Option 1",
-            "Icon 1",
-            "Option 2",
-            "Icon 2",
-            "Option 3",
-            "Icon 3",
-            "Option 4",
-            "Icon 4",
-            "Option 5",
-            "Icon 5",
-            "Option 6",
-            "Icon 6",
-    };
-
     /*
      * Данный объект генерирует лейаут из того ресурса, что ему скармливается.
      */
     private LayoutInflater mInflater;
+    private PublishSubject<String> mClickListener = PublishSubject.create();
+    private MutableLiveData<Pair<String, Boolean>> mCheckListener = new MutableLiveData<>();
+    private List<String> mData;
 
     public RecyclerViewAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -66,7 +61,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
      * Данный метод возвращает общее количество элементов, которые мы собираемся отобразить.
      */
     @Override public int getItemCount() {
-        return DATA.length;
+        return mData.size();
     }
 
     /*
@@ -86,12 +81,25 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
      */
     @Override public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof CheckboxViewHolder) {
-            ((CheckboxViewHolder) holder).mCheckbox.setText(DATA[position]);
+            ((CheckboxViewHolder) holder).mCheckbox.setText(mData.get(position));
         } else {
             IconViewHolder iconViewHolder = (IconViewHolder) holder;
-            iconViewHolder.mText.setText(DATA[position]);
+            iconViewHolder.mText.setText(mData.get(position));
             iconViewHolder.mIcon.setImageResource(R.mipmap.ic_launcher);
         }
+    }
+
+    public Observable<String> onClick() {
+        return mClickListener;
+    }
+
+    public LiveData<Pair<String, Boolean>> onCheck() {
+        return mCheckListener;
+    }
+
+    public void setData(List<String> data) {
+        mData = data;
+        notifyDataSetChanged();
     }
 
     /*
@@ -100,7 +108,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
      * RecyclerView.ViewHolder) - хранить в себе ссылки на все вью элемена - оттуда и название -
      * ViewHolder, дословно - Хранитель Вью.
      */
-    static class CheckboxViewHolder extends RecyclerView.ViewHolder {
+    class CheckboxViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.checkbox) CheckBox mCheckbox;
 
@@ -112,12 +120,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         @OnCheckedChanged(R.id.checkbox) void onCheckboxCheckChanged(boolean isChecked) {
-            // ButterKnife так позволяет повесить листенер на изменение состояния чекбокса.
-            // Его новое состояние находится в isChecked
+            mCheckListener.postValue(Pair.create(mData.get(getAdapterPosition()), isChecked));
         }
     }
 
-    static class IconViewHolder extends RecyclerView.ViewHolder {
+    class IconViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.icon) ImageView mIcon;
         @BindView(R.id.text) TextView mText;
@@ -129,8 +136,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
         @OnClick void onItemClicked() {
-            // У RecyclerView нет стандартных листенеров на клик одного из элементов
-            // поэтому нам надо самим его имплементировать
+            mClickListener.onNext(mData.get(getAdapterPosition()));
         }
     }
 }

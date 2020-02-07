@@ -5,16 +5,25 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.igor.app.R;
+import com.igor.app.sharedprefs.SharedPrefsManager;
+
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
 
 public class MainActivity extends AppCompatActivity {
 
+    @Inject SharedPrefsManager mSharedPrefsManager;
+
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AndroidInjection.inject(this);
         setContentView(R.layout.activity_main);
     }
 
@@ -47,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if (TextUtils.isEmpty(passwordText)) {
             password.setError("Should not be empty");
+            Toast.makeText(this, mSharedPrefsManager.accessSharedPrefs(), Toast.LENGTH_LONG).show();
             return;
         } else {
              password.setError(null);

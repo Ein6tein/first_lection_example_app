@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,17 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.igor.app.R;
-import com.igor.app.adapter.RecyclerViewAdapter;
+import com.igor.app.adapter.EmployeesAdapter;
 import com.igor.app.viewmodel.MyViewModel;
 import com.igor.app.viewmodel.MyViewModelFactory;
-
-import java.util.Arrays;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 import dagger.android.support.DaggerFragment;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
@@ -41,7 +37,7 @@ public class ExampleFragment extends DaggerFragment {
 
     private CompositeDisposable mCompositeDisposable;
     private MyViewModel mViewModel;
-    private RecyclerViewAdapter mAdapter;
+    private EmployeesAdapter mAdapter;
 
     @Nullable @Override public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_example, container, false);
@@ -58,19 +54,18 @@ public class ExampleFragment extends DaggerFragment {
         mCompositeDisposable = new CompositeDisposable();
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
-        mAdapter = new RecyclerViewAdapter(getActivity());
-
-        subscribe(mAdapter.onClick(), item -> Toast.makeText(getActivity(), item, Toast.LENGTH_LONG).show());
-        subscribe(mAdapter.onCheck(), pair -> Toast.makeText(getActivity(), "Text: \"" + pair.first + ",\" Is Checked: " + pair.second, Toast.LENGTH_LONG).show());
+        mAdapter = new EmployeesAdapter(getActivity());
 
         mRecyclerView.setAdapter(mAdapter);
 
         mViewModel = new ViewModelProvider(this, mViewModelFactory).get(MyViewModel.class);
+
+        mViewModel.employees().observe(getViewLifecycleOwner(), mAdapter::setEmployees);
     }
 
     @Override public void onStart() {
         super.onStart();
-        mAdapter.setData(Arrays.asList(mViewModel.getData()));
+        mViewModel.getEmployees();
     }
 
     @Override public void onStop() {

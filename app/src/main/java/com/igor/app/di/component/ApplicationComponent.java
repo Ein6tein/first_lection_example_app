@@ -5,6 +5,7 @@ import android.app.Application;
 import com.igor.app.application.MyApplication;
 import com.igor.app.di.builder.ActivityBuilder;
 import com.igor.app.di.module.ApplicationModule;
+import com.igor.app.di.module.NetworkModule;
 
 import javax.inject.Singleton;
 
@@ -18,7 +19,8 @@ import dagger.android.support.AndroidSupportInjectionModule;
 @Component(modules = {
         AndroidSupportInjectionModule.class,
         ApplicationModule.class,
-        ActivityBuilder.class
+        ActivityBuilder.class,
+        NetworkModule.class
 })
 public interface ApplicationComponent extends AndroidInjector<DaggerApplication> {
 
